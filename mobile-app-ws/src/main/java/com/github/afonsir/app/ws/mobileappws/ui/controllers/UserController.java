@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("users")
 public class UserController {
@@ -56,7 +58,9 @@ public class UserController {
       MediaType.APPLICATION_XML_VALUE
     }
   )
-  public ResponseEntity<UserRest> createUser(@RequestBody UserRequestBody userRequestBody) {
+  public ResponseEntity<UserRest> createUser(
+    @Valid @RequestBody UserRequestBody userRequestBody
+  ) {
     UserRest responseUser = new UserRest();
 
     responseUser.setEmail(userRequestBody.getEmail());
