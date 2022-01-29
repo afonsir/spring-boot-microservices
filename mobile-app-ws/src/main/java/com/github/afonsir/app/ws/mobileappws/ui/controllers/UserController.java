@@ -1,5 +1,9 @@
 package com.github.afonsir.app.ws.mobileappws.ui.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import com.github.afonsir.app.ws.mobileappws.ui.models.request.UserRequestBody;
 import com.github.afonsir.app.ws.mobileappws.ui.models.response.UserRest;
 
@@ -22,6 +26,8 @@ import jakarta.validation.Valid;
 @RequestMapping("users")
 public class UserController {
 
+  Map<String, UserRest> users = new HashMap<>();
+
   @GetMapping()
   public String getUsers(
     @RequestParam(value = "page", defaultValue = "1") int page,
@@ -39,13 +45,11 @@ public class UserController {
     }
   )
   public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
-    UserRest responseUser = new UserRest();
-
-    responseUser.setEmail("afonso.costa@mail.com");
-    responseUser.setFirstName("Afonso");
-    responseUser.setLastName("Costa");
-
-    return new ResponseEntity<UserRest>(responseUser, HttpStatus.OK);
+    if (users.containsKey(userId)) {
+      return new ResponseEntity<>(users.get(userId), HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
   }
 
   @PostMapping(
@@ -61,11 +65,15 @@ public class UserController {
   public ResponseEntity<UserRest> createUser(
     @Valid @RequestBody UserRequestBody userRequestBody
   ) {
+    String userId = UUID.randomUUID().toString();
     UserRest responseUser = new UserRest();
 
+    responseUser.setUserId(userId);
     responseUser.setEmail(userRequestBody.getEmail());
     responseUser.setFirstName(userRequestBody.getFirstName());
     responseUser.setLastName(userRequestBody.getLastName());
+
+    users.put(userId, responseUser);
 
     return new ResponseEntity<UserRest>(responseUser, HttpStatus.OK);
   }
