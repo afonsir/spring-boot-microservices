@@ -1,4 +1,4 @@
-package com.github.afonsir.app.ws.ui.models.response;
+package com.github.afonsir.app.ws.mobileappws.ui.models.response;
 
 public class UserRest {
   private String firstName;

@@ -1,8 +1,10 @@
-package com.github.afonsir.app.ws.ui.controllers;
+package com.github.afonsir.app.ws.mobileappws.ui.controllers;
 
-import com.github.afonsir.app.ws.ui.models.response.UserRest;
+import com.github.afonsir.app.ws.mobileappws.ui.models.response.UserRest;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,15 +34,14 @@ public class UserController {
       MediaType.APPLICATION_XML_VALUE
     }
   )
-  public UserRest getUser(@PathVariable String userId) {
-
+  public ResponseEntity<UserRest> getUser(@PathVariable String userId) {
     UserRest responseUser = new UserRest();
 
     responseUser.setEmail("afonso.costa@mail.com");
     responseUser.setFirstName("Afonso");
     responseUser.setLastName("Costa");
 
-    return responseUser;
+    return new ResponseEntity<UserRest>(responseUser, HttpStatus.OK);
   }
 
   @PostMapping
