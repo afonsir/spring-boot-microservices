@@ -1,5 +1,7 @@
 package com.github.afonsir.app.ws.ui.controllers;
 
+import com.github.afonsir.app.ws.ui.models.response.UserRest;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +25,15 @@ public class UserController {
   }
 
   @GetMapping(path = "/{userId}")
-  public String getUser(@PathVariable String userId) {
-    return "GET user was called with userId = " + userId;
+  public UserRest getUser(@PathVariable String userId) {
+
+    UserRest responseUser = new UserRest();
+
+    responseUser.setEmail("afonso.costa@mail.com");
+    responseUser.setFirstName("Afonso");
+    responseUser.setLastName("Costa");
+
+    return responseUser;
   }
 
   @PostMapping
