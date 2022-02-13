@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler(value = {Exception.class})
+  @ExceptionHandler(value = { Exception.class })
   public ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request) {
 
     String errorMessageDescription = ex.getLocalizedMessage();
@@ -29,22 +29,8 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     );
   }
 
-  @ExceptionHandler(value = {NullPointerException.class})
-  public ResponseEntity<Object> handleNullPointerException(NullPointerException ex, WebRequest request) {
-
-    String errorMessageDescription = ex.getLocalizedMessage();
-
-    if (errorMessageDescription == null) errorMessageDescription = ex.toString();
-
-    ErrorMessage errorMessage = new ErrorMessage(new Date(), errorMessageDescription);
-
-    return new ResponseEntity<>(
-      errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR
-    );
-  }
-
-  @ExceptionHandler(value = {UserServiceException.class})
-  public ResponseEntity<Object> handleUserServiceException(UserServiceException ex, WebRequest request) {
+  @ExceptionHandler(value = { NullPointerException.class, UserServiceException.class })
+  public ResponseEntity<Object> handleSpecificExceptions(Exception ex, WebRequest request) {
 
     String errorMessageDescription = ex.getLocalizedMessage();
 
