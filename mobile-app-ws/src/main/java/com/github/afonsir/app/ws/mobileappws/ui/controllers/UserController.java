@@ -2,12 +2,13 @@ package com.github.afonsir.app.ws.mobileappws.ui.controllers;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import com.github.afonsir.app.ws.mobileappws.ui.models.request.UpdateUserRequestBody;
 import com.github.afonsir.app.ws.mobileappws.ui.models.request.UserRequestBody;
 import com.github.afonsir.app.ws.mobileappws.ui.models.response.UserRest;
+import com.github.afonsir.app.ws.mobileappws.userservice.UserService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,9 @@ import jakarta.validation.Valid;
 public class UserController {
 
   Map<String, UserRest> users = new HashMap<>();
+
+  @Autowired
+  UserService userService;
 
   @GetMapping()
   public String getUsers(
@@ -66,16 +70,7 @@ public class UserController {
   public ResponseEntity<UserRest> createUser(
     @Valid @RequestBody UserRequestBody userRequestBody
   ) {
-    String userId = UUID.randomUUID().toString();
-    UserRest responseUser = new UserRest();
-
-    responseUser.setUserId(userId);
-    responseUser.setEmail(userRequestBody.getEmail());
-    responseUser.setFirstName(userRequestBody.getFirstName());
-    responseUser.setLastName(userRequestBody.getLastName());
-
-    users.put(userId, responseUser);
-
+    UserRest responseUser = userService.createUser(userRequestBody);
     return new ResponseEntity<UserRest>(responseUser, HttpStatus.OK);
   }
 
