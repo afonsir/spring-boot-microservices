@@ -2,22 +2,31 @@ package com.github.afonsir.app.ws.mobileappws.userservice.impl;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
+import com.github.afonsir.app.ws.mobileappws.shared.Utils;
 import com.github.afonsir.app.ws.mobileappws.ui.models.request.UserRequestBody;
 import com.github.afonsir.app.ws.mobileappws.ui.models.response.UserRest;
 import com.github.afonsir.app.ws.mobileappws.userservice.UserService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
   Map<String, UserRest> users = new HashMap<>();
+  Utils utils;
+
+  public UserServiceImpl() {}
+
+  @Autowired
+  public UserServiceImpl(Utils utils) {
+    this.utils = utils;
+  }
 
   @Override
   public UserRest createUser(UserRequestBody userRequestBody) {
-    String userId = UUID.randomUUID().toString();
+    String userId = utils.generateUserId();
     UserRest responseUser = new UserRest();
 
     responseUser.setUserId(userId);
