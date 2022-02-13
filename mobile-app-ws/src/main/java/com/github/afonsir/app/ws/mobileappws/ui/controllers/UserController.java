@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import com.github.afonsir.app.ws.mobileappws.ui.models.request.UpdateUserRequestBody;
 import com.github.afonsir.app.ws.mobileappws.ui.models.request.UserRequestBody;
 import com.github.afonsir.app.ws.mobileappws.ui.models.response.UserRest;
 
@@ -78,9 +79,29 @@ public class UserController {
     return new ResponseEntity<UserRest>(responseUser, HttpStatus.OK);
   }
 
-  @PutMapping
-  public String updateUser() {
-    return "UPDATE user was called";
+  @PutMapping(
+    path = "/{userId}",
+    consumes = {
+      MediaType.APPLICATION_JSON_VALUE,
+      MediaType.APPLICATION_XML_VALUE
+    },
+    produces = {
+      MediaType.APPLICATION_JSON_VALUE,
+      MediaType.APPLICATION_XML_VALUE
+    }
+  )
+  public ResponseEntity<UserRest> updateUser(
+    @PathVariable String userId,
+    @Valid @RequestBody UpdateUserRequestBody updateUserRequestBody
+  ) {
+    UserRest responseUser = users.get(userId);
+
+    responseUser.setFirstName(updateUserRequestBody.getFirstName());
+    responseUser.setLastName(updateUserRequestBody.getLastName());
+
+    users.put(userId, responseUser);
+
+    return new ResponseEntity<UserRest>(responseUser, HttpStatus.OK);
   }
 
   @DeleteMapping
